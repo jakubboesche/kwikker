@@ -36,9 +36,17 @@ public class KwikkerPostRestController {
 
     @GetMapping(path = "wall/{user}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Collection<KwikkerPostDto>> getWall(@PathVariable("author") String author) {
+    public ResponseEntity<Collection<KwikkerPostDto>> getWall(@PathVariable("user") String user) {
         return ResponseEntity.of(
-                Optional.of(kwikkerPostRepository.getPosts(author)
+                Optional.of(kwikkerPostRepository.getPosts(user)
+                        .stream().map(KwikkerPost::toDto).collect(toList())));
+    }
+
+    @GetMapping(path = "timeline/{user}",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Collection<KwikkerPostDto>> getTimeline(@PathVariable("user") String user) {
+        return ResponseEntity.of(
+                Optional.of(kwikkerPostRepository.getTimeline(user)
                         .stream().map(KwikkerPost::toDto).collect(toList())));
     }
 }

@@ -1,47 +1,62 @@
 package com.jb.kwikker.resources;
 
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 public class KwikkerFollowRestControllerIT {
     @Autowired
-    private MockMvc mvc;
+    private TestRestTemplate restTemplate;
 
-    @Test
-    public void shouldFollow() throws Exception {
-        mvc.perform(put("/follow/john/peter"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("[\"peter\"]"));
+    @Before
+    public void init() {
+        restTemplate.getRestTemplate().setInterceptors(
+                singletonList((request, body, execution) -> {
+                    request.getHeaders().set("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+                    request.getHeaders().set("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
+                    return execution.execute(request, body);
+                })
+        );
     }
 
     @Test
-    public void shouldUnfollowWhenNotFollowedBefore() throws Exception {
-        mvc.perform(delete("/follow/john/peter"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("[]"));
+    public void shouldFollow() {
+        restTemplate.put("/follow/john/peter", Void.class);
+
+        assertThat(restTemplate.getForObject("/follow/john", String[].class))
+                .contains("peter");
     }
 
     @Test
-    public void shouldUnfollowWhenFollowedBefore() throws Exception {
-        mvc.perform(put("/follow/john/peter"));
-        mvc.perform(put("/follow/john/michael"));
+    public void shouldUnfollowWhenNotFollowedBefore() {
+        restTemplate.delete("/follow/john/peter");
 
-        mvc.perform(delete("/follow/john/peter"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("[\"michael\"]"));
+        assertThat(restTemplate.getForObject("/follow/john", String[].class))
+                .isEmpty();
+    }
+
+    @Test
+    public void shouldUnfollowWhenFollowedBefore() {
+        //given
+        restTemplate.put("/follow/john/peter", Void.class);
+        restTemplate.put("/follow/john/michael", Void.class);
+
+        //when
+        restTemplate.delete("/follow/john/peter");
+
+        //theen
+        assertThat(restTemplate.getForObject("/follow/john", String[].class))
+                .contains("michael");
     }
 }

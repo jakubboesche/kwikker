@@ -6,7 +6,15 @@ import java.util.*;
 
 @Repository
 public class KwikkerFollowRepository {
-    private Map<String, Set<String>> followedByFollower = new HashMap<>();
+    private Map<String, Set<String>> followedByFollower;
+
+    public KwikkerFollowRepository() {
+        init();
+    }
+
+    public void init() {
+        followedByFollower = new HashMap<>();
+    }
 
     public Set<String> getFollowedAuthors(String follower) {
         return initByFollower(follower);
