@@ -3,7 +3,6 @@ package com.jb.kwikker.repositories;
 import com.jb.kwikker.model.KwikkerPost;
 import org.junit.Test;
 
-import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 
@@ -29,22 +28,6 @@ public class KwikkerPostRepositoryTest {
     @Test
     public void shouldAcceptPost() {
         assertThat(kwikkerPostRepository.savePost(AUTHOR, TEST_MESSAGE)).isNotBlank();
-    }
-
-    @Test
-    public void shouldReadSavedPostById() {
-        String postId = kwikkerPostRepository.savePost(AUTHOR, TEST_MESSAGE);
-
-        KwikkerPost post = kwikkerPostRepository.getPostById(postId);
-        assertThat(post.getAuthor()).isEqualTo(AUTHOR);
-        assertThat(post.getMessage()).isEqualTo(TEST_MESSAGE);
-        assertThat(post.getPosted()).isBefore(OffsetDateTime.now());
-    }
-
-    @Test
-    public void shouldReadNoPostByInvalidId() {
-        KwikkerPost post = kwikkerPostRepository.getPostById("invalid_id");
-        assertThat(post).isNull();
     }
 
     @Test

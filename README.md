@@ -3,6 +3,9 @@ kwikker is a REST service for short message posting and following other users' p
 Compilation:
 mvn package
 
+Run all tests:
+mvn verify -Pintegration-test
+
 Running (Spring Boot):
 * mvn spring-boot:run
 * open http://localhost:8080

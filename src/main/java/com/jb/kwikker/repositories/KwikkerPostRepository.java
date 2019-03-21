@@ -13,8 +13,7 @@ import static java.util.stream.Collectors.toList;
 
 @Repository
 public class KwikkerPostRepository {
-    private Map<String, KwikkerPost> postById = new HashMap<>();
-    private Map<String, List<KwikkerPost>> postsByAuthor = new HashMap<>();
+    private Map<String, List<KwikkerPost>> postsByAuthor;
     private KwikkerFollowRepository kwikkerFollowRepository;
 
     @Autowired
@@ -24,20 +23,14 @@ public class KwikkerPostRepository {
     }
 
     public void init() {
-        postById = new HashMap<>();
         postsByAuthor = new HashMap<>();
     }
 
     public String savePost(String author, String message) {
         String uuid = UUID.randomUUID().toString();
         KwikkerPost post = new KwikkerPost(author, message, OffsetDateTime.now());
-        postById.put(uuid, post);
         postsByAuthor.computeIfAbsent(author, s -> new ArrayList<>()).add(post);
         return uuid;
-    }
-
-    public KwikkerPost getPostById(String postId) {
-        return postById.getOrDefault(postId, null);
     }
 
     public List<KwikkerPost> getPosts(String user) {
