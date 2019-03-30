@@ -22,8 +22,8 @@ public class KwikkerPostRepositoryTest {
     private static final String TEST_MESSAGE = "test message";
     private static final String TEST_MESSAGE_2 = "test message 2";
 
-    private KwikkerFollowRepository kwikkerFollowRepositoryMock = mock(KwikkerFollowRepository.class);
-    private KwikkerPostRepository kwikkerPostRepository = new KwikkerPostRepository(kwikkerFollowRepositoryMock);
+    private final KwikkerFollowRepository kwikkerFollowRepositoryMock = mock(KwikkerFollowRepository.class);
+    private final KwikkerPostRepository kwikkerPostRepository = new KwikkerPostRepository(kwikkerFollowRepositoryMock);
 
     @Test
     public void shouldAcceptPost() {

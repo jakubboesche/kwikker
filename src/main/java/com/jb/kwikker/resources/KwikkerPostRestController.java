@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Optional;
@@ -26,7 +25,7 @@ public class KwikkerPostRestController {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Resource> postUpload(@RequestBody KwikkerPostUploadDto kwikkerPost) throws IOException {
+    public ResponseEntity<Resource> postUpload(@RequestBody KwikkerPostUploadDto kwikkerPost) {
         if (kwikkerPost.getMessage().length() > MAX_POST_LENGTH) {
             return ResponseEntity.badRequest().build();
         }

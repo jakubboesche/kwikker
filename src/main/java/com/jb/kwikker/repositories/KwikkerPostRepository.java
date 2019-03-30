@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.toList;
 @Repository
 public class KwikkerPostRepository {
     private Map<String, List<KwikkerPost>> postsByAuthor;
-    private KwikkerFollowRepository kwikkerFollowRepository;
+    private final KwikkerFollowRepository kwikkerFollowRepository;
 
     @Autowired
     public KwikkerPostRepository(KwikkerFollowRepository kwikkerFollowRepository) {

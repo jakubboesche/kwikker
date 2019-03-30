@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class KwikkerFollowRepositoryTest {
-    private KwikkerFollowRepository kwikkerFollowRepository = new KwikkerFollowRepository();
+    private final KwikkerFollowRepository kwikkerFollowRepository = new KwikkerFollowRepository();
 
     @Test
     public void shouldFollow() {

@@ -6,9 +6,9 @@ import org.springframework.beans.BeanUtils;
 import java.time.OffsetDateTime;
 
 public class KwikkerPost {
-    private String author;
-    private String message;
-    private OffsetDateTime posted;
+    private final String author;
+    private final String message;
+    private final OffsetDateTime posted;
 
     public KwikkerPost(String author, String message, OffsetDateTime posted) {
         this.author = author;

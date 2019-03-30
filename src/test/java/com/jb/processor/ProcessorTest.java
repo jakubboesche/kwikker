@@ -1,8 +1,5 @@
 package com.jb.processor;
 
-import com.jb.processor.MissingTypeException;
-import com.jb.processor.Order;
-import com.jb.processor.Processor;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -11,7 +8,7 @@ import static org.assertj.core.api.Assertions.*;
 
 public class ProcessorTest {
     private static final int VALUE = 1;
-    private Processor processor = new Processor();
+    private final Processor processor = new Processor();
 
     @Test
     public void shouldFetchEmptyOrderList() {
