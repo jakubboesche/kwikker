@@ -48,14 +48,11 @@ public class KwikkerFollowRestControllerIT {
 
     @Test
     public void shouldUnfollowWhenFollowedBefore() {
-        //given
         restTemplate.put("/follow/john/peter", Void.class);
         restTemplate.put("/follow/john/michael", Void.class);
 
-        //when
         restTemplate.delete("/follow/john/peter");
 
-        //theen
         assertThat(restTemplate.getForObject("/follow/john", String[].class))
                 .contains("michael");
     }
